@@ -95,7 +95,12 @@ const API_URL = process.env.REACT_APP_API_URL;
 axios.defaults.baseURL = API_URL;
 
 // Helper for receipt/file URLs
-const getReceiptUrl = (path) => path ? path : '';
+const getReceiptUrl = (path) => {
+  if (!path) return '';
+  if (/^https?:\/\//.test(path)) return path;
+  const cloudName = process.env.REACT_APP_CLOUD_NAME || 'dusi3llvb';
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${path}`;
+};
 
 // Add this helper function before any other code
 const calculateDays = (fromDate, toDate) => {

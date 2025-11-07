@@ -14,7 +14,13 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 const BASE_URL = '';
 
-// Use Cloudinary URLs for profile images only
+// Helper for profile image URLs
+const getProfileImageUrl = (path) => {
+  if (!path) return '';
+  if (/^https?:\/\//.test(path)) return path;
+  const cloudName = process.env.REACT_APP_CLOUD_NAME || 'dusi3llvb';
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${path}`;
+};
 
 const InfoCard = ({ icon, title, value, chip, sx }) => (
   <Paper 
@@ -144,7 +150,7 @@ const EmployeeInformation = ({ user }) => {
       >
         {profileImage ? (
           <Avatar
-            src={profileImage}
+            src={getProfileImageUrl(profileImage)}
             sx={{ width: 80, height: 80, bgcolor: 'primary.main', fontSize: '2rem' }}
           />
         ) : (
