@@ -116,7 +116,7 @@ const DashboardHome = () => {
   const [openChangePass, setOpenChangePass] = useState(false);
 
   const API_URL = process.env.REACT_APP_API_URL;
-  const BASE_URL = `${API_URL}/`;
+  const BASE_URL = '';
 
   const handleLogout = () => {
     logout();
@@ -346,9 +346,7 @@ const DashboardHome = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 {(employeeData?.profile_image_path || user?.profile_image_path) ? (
                   <Avatar
-                    src={(employeeData?.profile_image_path || user?.profile_image_path).startsWith('uploads/images/')
-                      ? BASE_URL + (employeeData?.profile_image_path || user?.profile_image_path)
-                      : BASE_URL + 'uploads/images/' + (employeeData?.profile_image_path || user?.profile_image_path).replace(/^uploads\//, '')}
+                    src={(employeeData?.profile_image_path || user?.profile_image_path)}
                     sx={{ width: 32, height: 32, bgcolor: 'primary.dark', fontSize: '1rem', fontWeight: 'bold' }}
                   />
                 ) : (

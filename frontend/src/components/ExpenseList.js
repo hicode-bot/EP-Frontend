@@ -94,7 +94,7 @@ const statusColors = {
 const API_URL = process.env.REACT_APP_API_URL;
 axios.defaults.baseURL = API_URL;
 
-// Helper for S3 receipt/file URLs
+// Helper for receipt/file URLs
 const getReceiptUrl = (path) => path ? path : '';
 
 // Add this helper function before any other code

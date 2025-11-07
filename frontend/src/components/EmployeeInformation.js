@@ -12,7 +12,9 @@ import { formatDisplayDate } from './NewExpense';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const BASE_URL = `${API_URL}/`;
+const BASE_URL = '';
+
+// Use Cloudinary URLs for profile images only
 
 const InfoCard = ({ icon, title, value, chip, sx }) => (
   <Paper 
@@ -142,7 +144,7 @@ const EmployeeInformation = ({ user }) => {
       >
         {profileImage ? (
           <Avatar
-            src={profileImage.startsWith('uploads/images/') ? BASE_URL + profileImage : BASE_URL + 'uploads/images/' + profileImage.replace(/^uploads\//, '')}
+            src={profileImage}
             sx={{ width: 80, height: 80, bgcolor: 'primary.main', fontSize: '2rem' }}
           />
         ) : (
