@@ -98,7 +98,7 @@ axios.defaults.baseURL = API_URL;
 const getReceiptUrl = (path) => {
   if (!path) return '';
   if (/^https?:\/\//.test(path)) return path;
-  const cloudName = process.env.REACT_APP_CLOUD_NAME || 'dusi3llvb';
+  const cloudName = process.env.REACT_APP_CLOUD_NAME;
   return `https://res.cloudinary.com/${cloudName}/image/upload/${path}`;
 };
 
