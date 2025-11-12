@@ -91,25 +91,26 @@ const TerminateEmployeeDialog = ({ open, onClose, employee, onSuccess }) => {
   const [inactiveReason, setInactiveReason] = useState('terminated');
 
   useEffect(() => {
-    if (employee?.emp_code) {
-      fetchReportees();
-      fetchAvailableManagers();
-      // Set default last employment date to today
-      setLastEmploymentDate(new Date());
-      setInactiveReason('terminated');
+    async function fetchData() {
+      if (employee?.emp_code) {
+        await fetchReportees();
+        await fetchAvailableManagers();
+        setLastEmploymentDate(new Date());
+        setInactiveReason('terminated');
+      }
     }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employee]);
 
-  // Enhanced reportees fetch with better error handling
   const fetchReportees = async () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`/api/employees/reporting-to/${employee.emp_code}`, {
+      const res = await axios.get(`/api/employees/reporting-to/${employee.emp_code}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // Transform the response to ensure designation_name is properly handled
-      const reporteesWithDesignation = response.data.map(reportee => ({
+      const reporteesWithDesignation = res.data.map(reportee => ({
         ...reportee,
         designation_name: reportee.designation?.name || reportee.designation_name || 'Position Not Assigned'
       }));
@@ -117,7 +118,7 @@ const TerminateEmployeeDialog = ({ open, onClose, employee, onSuccess }) => {
     } catch (error) {
       console.error('Error fetching reportees:', error);
       setError(`Failed to fetch reporting employees: ${error.response?.data?.message || 'Please try again later'}`);
-      setReportees([]); // Reset reportees on error
+      setReportees([]);
     } finally {
       setLoading(false);
     }
@@ -125,17 +126,15 @@ const TerminateEmployeeDialog = ({ open, onClose, employee, onSuccess }) => {
 
   const fetchAvailableManagers = async () => {
     try {
-      const response = await axios.get('/api/employees/all', {
+      const res = await axios.get('/api/employees/all', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // Filter for active employees who could be managers
-      const activeManagers = response.data.filter(emp => 
+      const activeManagers = res.data.filter(emp => 
         emp.status === 'active' && 
         emp.emp_code !== employee.emp_code &&
         emp.role !== 'Not Activated' && 
         emp.role !== ''
       );
-      
       setManagers(activeManagers);
     } catch (error) {
       console.error('Error fetching managers:', error);
